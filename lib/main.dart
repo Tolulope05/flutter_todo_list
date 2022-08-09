@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+import './const/theme.dart';
+import './screens/home_page.dart';
+import './services/theme_services.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -13,49 +20,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: ' TODO LIST',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'TODO LIST',
+      theme: Themes.light(context),
+      darkTheme: Themes.dark(context),
+      themeMode: ThemeServies().theme,
       home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("TODO LIST"),
-        centerTitle: true,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.account_circle),
-          )
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Center(
-            child: Icon(
-              Icons.art_track,
-              size: 60,
-            ),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: () {
-              Get.isDarkMode
-                  ? Get.changeTheme(ThemeData.light())
-                  : Get.changeTheme(ThemeData.dark());
-            },
-            child: Text("Change Theme"),
-          )
-        ],
-      ),
     );
   }
 }
