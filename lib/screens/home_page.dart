@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/const/styles.dart';
+import 'package:flutter_todo_list/const/theme.dart';
 import 'package:flutter_todo_list/services/notification_services.dart';
 import 'package:flutter_todo_list/services/theme_services.dart';
 import 'package:flutter_todo_list/widgets/button.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -15,6 +18,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late NotifyHelper notifyHelper;
+  DateTime selectedDate = DateTime.now();
   @override
   void initState() {
     notifyHelper = NotifyHelper();
@@ -36,7 +40,41 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           _addTaskBar(),
+          _addDateBar(),
         ],
+      ),
+    );
+  }
+
+  Container _addDateBar() {
+    return Container(
+      margin: const EdgeInsets.only(left: 20.0, top: 20),
+      child: DatePicker(
+        DateTime.now(),
+        height: 100,
+        width: 70,
+        initialSelectedDate: DateTime.now(),
+        selectionColor: primarycolor,
+        selectedTextColor: const Color.fromRGBO(255, 255, 255, 1),
+        dateTextStyle: GoogleFonts.lato(
+          textStyle: TextStyle(
+            color: Get.isDarkMode ? Colors.white : Colors.black,
+          ),
+        ),
+        dayTextStyle: GoogleFonts.lato(
+          textStyle: TextStyle(
+            color: Get.isDarkMode ? Colors.white : Colors.black,
+          ),
+        ),
+        monthTextStyle: GoogleFonts.lato(
+          textStyle: TextStyle(
+            color: Get.isDarkMode ? Colors.white : Colors.black,
+          ),
+        ),
+        onDateChange: (date) {
+          selectedDate = date;
+          print("${DateFormat.yMMMd().format(selectedDate)} Selected");
+        },
       ),
     );
   }
@@ -56,7 +94,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 style: subHeadingStyle,
               ),
-              Text("Today", style: headingStyle)
+              Text(
+                "Today",
+                style: headingStyle,
+              ),
             ],
           ),
           MyButton(

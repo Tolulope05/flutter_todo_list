@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_todo_list/screens/home_page.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
@@ -76,11 +77,7 @@ class NotifyHelper {
     //   context,
     //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
     // );
-    Get.to(const Scaffold(
-      body: Center(
-        child: Text("Welcome to your Todo list"),
-      ),
-    ));
+    Get.to(() => const MyHomePage());
   }
 
   void displayNotification({
