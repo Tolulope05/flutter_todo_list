@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/const/styles.dart';
+import 'package:flutter_todo_list/const/theme.dart';
 import 'package:flutter_todo_list/widgets/input_field.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AddTaskPage extends StatefulWidget {
-  DateTime date = DateTime.now();
   AddTaskPage({
     Key? key,
-    required this.date,
   }) : super(key: key);
 
   @override
@@ -16,6 +15,8 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
+  DateTime selectedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,13 +31,30 @@ class _AddTaskPageState extends State<AddTaskPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Center(child: Text(DateFormat.yMMMd().format(widget.date))),
+              // Center(child: Text(DateFormat.yMMMd().format(widget.selectedDate))),
               Text(
                 "Add Task",
                 style: headingStyle,
               ),
               const MyInputField(title: "Title", hint: "Enter your task title"),
               const MyInputField(title: "Note", hint: "Enter your task note"),
+              MyInputField(
+                title: "Date",
+                hint: DateFormat.yMd().format(selectedDate),
+                widget: IconButton(
+                  onPressed: () async {
+                    DateTime? _pickedDate = await _getDateFromUser();
+                    if (_pickedDate != null) {
+                      selectedDate = _pickedDate;
+                    }
+                    print(selectedDate);
+                  },
+                  icon: const Icon(
+                    Icons.calendar_today_outlined,
+                    color: greyColor,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -67,5 +85,20 @@ class _AddTaskPageState extends State<AddTaskPage> {
         )
       ],
     );
+  }
+
+  Future<DateTime?> _getDateFromUser() async {
+    DateTime? _pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(DateTime.now().year - 1),
+      lastDate: DateTime(2100),
+    );
+    if (_pickedDate != null) {
+      setState(() {
+        selectedDate = _pickedDate;
+      });
+      return selectedDate;
+    }
   }
 }

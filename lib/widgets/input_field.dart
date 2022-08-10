@@ -45,30 +45,31 @@ class MyInputField extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                    child: TextFormField(
-                  controller: controller,
-                  style: subTitleStyle,
-                  cursorColor:
-                      Get.isDarkMode ? Colors.grey[100] : Colors.grey[700],
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintStyle: subTitleStyle,
-                    hintText: hint,
-                    alignLabelWithHint: true,
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).backgroundColor,
-                        width: 0,
+                  child: TextFormField(
+                    readOnly: widget != null,
+                    controller: controller,
+                    autofocus: false,
+                    style: subTitleStyle,
+                    cursorColor:
+                        Get.isDarkMode ? Colors.grey[100] : Colors.grey[700],
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintStyle: subTitleStyle,
+                      hintText: hint,
+                      alignLabelWithHint: true,
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).backgroundColor,
+                          width: 0,
+                        ),
                       ),
                     ),
-                    // enabledBorder: UnderlineInputBorder(
-                    //   borderSide: BorderSide(
-                    //     color: Theme.of(context).backgroundColor,
-                    //     width: 0,
-                    //   ),
-                    // ),
                   ),
-                )),
+                ),
+                if (widget != null)
+                  Container(
+                    child: widget,
+                  ),
               ],
             ),
           )
