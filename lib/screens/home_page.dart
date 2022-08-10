@@ -9,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 
+import 'add_task_bar.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -102,7 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           MyButton(
             label: "+ Add Task",
-            onTap: () {},
+            onTap: () {
+              Get.to(() => AddTaskPage(date: selectedDate));
+            },
           )
         ],
       ),
