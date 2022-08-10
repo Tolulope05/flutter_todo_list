@@ -17,6 +17,11 @@ class _MyHomePageState extends State<MyHomePage> {
     notifyHelper = NotifyHelper();
     notifyHelper.initalizeNotification();
     notifyHelper.requestIOSPermission();
+    notifyHelper.displayScheduledNotification(
+      title: "Wake up",
+      body: "Time to read!",
+    );
+
     super.initState();
   }
 

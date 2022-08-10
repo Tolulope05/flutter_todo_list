@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
 
 class NotifyHelper {
@@ -9,6 +10,7 @@ class NotifyHelper {
 
   initalizeNotification() async {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+    tz.initializeTimeZones();
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('launcher_icon');
     final IOSInitializationSettings initializationSettingsIOS =
@@ -81,7 +83,7 @@ class NotifyHelper {
     ));
   }
 
-  displayNotification({
+  void displayNotification({
     required String title,
     required String body,
   }) async {
@@ -105,6 +107,28 @@ class NotifyHelper {
       body,
       platformChannelSpecifics,
       payload: 'item x',
+    );
+  }
+
+  void displayScheduledNotification({
+    required String title,
+    required String body,
+  }) async {
+    // tz.setLocalLocation(tz.getLocation(timeZoneName));
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      title,
+      body,
+      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+      const NotificationDetails(
+          android: AndroidNotificationDetails(
+        'your channel id',
+        'your channel name',
+        channelDescription: 'your channel description',
+      )),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 }
