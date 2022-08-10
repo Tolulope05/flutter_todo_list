@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AddTaskPage extends StatefulWidget {
-  AddTaskPage({
+  const AddTaskPage({
     Key? key,
   }) : super(key: key);
 
@@ -16,6 +16,8 @@ class AddTaskPage extends StatefulWidget {
 
 class _AddTaskPageState extends State<AddTaskPage> {
   DateTime selectedDate = DateTime.now();
+  String _endTime = "9:30 PM";
+  String _startTime = DateFormat("hh:mm a").format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Center(child: Text(DateFormat.yMMMd().format(widget.selectedDate))),
               Text(
                 "Add Task",
                 style: headingStyle,
@@ -54,6 +55,41 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     color: greyColor,
                   ),
                 ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: MyInputField(
+                      title: "Start Time",
+                      hint: _startTime,
+                      widget: IconButton(
+                        onPressed: () {
+                          _getTimeFromUser(isStartTime: true);
+                        },
+                        icon: const Icon(
+                          Icons.access_time_outlined,
+                          color: greyColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: MyInputField(
+                      title: "End Time",
+                      hint: _endTime,
+                      widget: IconButton(
+                        onPressed: () {
+                          _getTimeFromUser(isStartTime: false);
+                        },
+                        icon: const Icon(
+                          Icons.access_time_outlined,
+                          color: greyColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -100,5 +136,39 @@ class _AddTaskPageState extends State<AddTaskPage> {
       });
       return selectedDate;
     }
+  }
+
+  Future<TimeOfDay?> _getTimeFromUser({required bool isStartTime}) async {
+    TimeOfDay? _pickedTime = await _showTimePicker(isStartTime: isStartTime);
+
+    if (_pickedTime != null) {
+      String _formattedTime = _pickedTime.format(context);
+      setState(() {
+        if (isStartTime) {
+          _startTime = _formattedTime;
+        } else {
+          _endTime = _formattedTime;
+        }
+      });
+      return _pickedTime;
+    }
+  }
+
+  Future<TimeOfDay?> _showTimePicker({required bool isStartTime}) {
+    return showTimePicker(
+      context: context,
+      initialEntryMode: TimePickerEntryMode.input,
+      // initialTime: TimeOfDay.now(),
+
+      initialTime: isStartTime
+          ? TimeOfDay(
+              hour: int.parse(_startTime.split(":")[0]),
+              minute: int.parse(_startTime.split(":")[1].split(" ")[0]),
+            )
+          : TimeOfDay(
+              hour: int.parse(_endTime.split(":")[0]) + int.parse("12"),
+              minute: int.parse(_endTime.split(":")[1].split(" ")[0]),
+            ),
+    );
   }
 }
