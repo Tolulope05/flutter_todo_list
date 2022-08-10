@@ -20,3 +20,14 @@ TextStyle get subHeadingStyle {
     ),
   );
 }
+
+TextStyle get subTitleStyle {
+  return GoogleFonts.lato(
+    textStyle: TextStyle(
+      fontSize: 18,
+      height: 24 / 23,
+      fontWeight: FontWeight.bold,
+      color: Get.isDarkMode ? Colors.grey[100] : Colors.grey[700],
+    ),
+  );
+}

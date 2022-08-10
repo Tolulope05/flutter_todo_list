@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_list/const/styles.dart';
+import 'package:flutter_todo_list/widgets/input_field.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -18,8 +20,26 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
-      body: Column(
-        children: [Center(child: Text(DateFormat.yMMMd().format(widget.date)))],
+      body: Container(
+        margin: const EdgeInsets.only(top: 8.0),
+        padding: const EdgeInsets.only(
+          right: 20.0,
+          left: 20.0,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Center(child: Text(DateFormat.yMMMd().format(widget.date))),
+              Text(
+                "Add Task",
+                style: headingStyle,
+              ),
+              const MyInputField(title: "Title", hint: "Enter your task title"),
+              const MyInputField(title: "Note", hint: "Enter your task note"),
+            ],
+          ),
+        ),
       ),
     );
   }
