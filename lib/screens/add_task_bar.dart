@@ -18,7 +18,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
   DateTime selectedDate = DateTime.now();
   String _endTime = "9:30 PM";
   String _startTime = DateFormat("hh:mm a").format(DateTime.now());
-
+  int _selectedRemind = 5;
+  List<int> remindList = [5, 10, 15, 20];
+  String _selectedRepeat = "None";
+  List<String> repeatList = ["None", "Daily", "Weekly", "Month"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,6 +93,59 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     ),
                   ),
                 ],
+              ),
+              MyInputField(
+                title: "Remind",
+                hint: "$_selectedRemind minutes early",
+                widget: DropdownButton(
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: greyColor,
+                  ),
+                  iconSize: 32,
+                  elevation: 4,
+                  style: subTitleStyle,
+                  underline: Container(height: 0),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedRemind = int.parse(value!);
+                    });
+                  },
+                  items: remindList.map<DropdownMenuItem<String>>((int value) {
+                    return DropdownMenuItem<String>(
+                      value: value.toString(),
+                      child: Text(value.toString()),
+                    );
+                  }).toList(),
+                ),
+              ),
+              MyInputField(
+                title: "Repeat",
+                hint: _selectedRepeat,
+                widget: DropdownButton(
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: greyColor,
+                  ),
+                  iconSize: 32,
+                  elevation: 4,
+                  style: subTitleStyle,
+                  underline: Container(height: 0),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedRepeat = value!;
+                    });
+                  },
+                  items:
+                      repeatList.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
             ],
           ),
