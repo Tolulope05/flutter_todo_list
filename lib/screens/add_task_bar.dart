@@ -147,6 +147,33 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   }).toList(),
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.only(top: 16.0),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Color",
+                          style: titleStyle,
+                        ),
+                        Wrap(
+                          children: List<Widget>.generate(3, (index) {
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                              child: CircleAvatar(
+                                radius: 14,
+                                backgroundColor: Colors.grey,
+                              ),
+                            );
+                          }),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),
