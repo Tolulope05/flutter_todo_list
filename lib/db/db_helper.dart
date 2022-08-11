@@ -34,6 +34,14 @@ class DBHelper {
   }
 
   static Future<int> insert(Task? task) async {
+    print("Insert Function called");
     return await _db?.insert(_tableName, task!.toJson()) ?? 1;
+  }
+
+  // get all tasks from database
+  static Future<List<Map<String, dynamic>>> query() async {
+    print("Query Function called");
+    List<Map<String, dynamic>> tasks = await _db!.query(_tableName);
+    return tasks;
   }
 }
