@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/const/styles.dart';
 import 'package:flutter_todo_list/const/theme.dart';
+import 'package:flutter_todo_list/widgets/button.dart';
 import 'package:flutter_todo_list/widgets/input_field.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +23,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
   List<int> remindList = [5, 10, 15, 20];
   String _selectedRepeat = "None";
   List<String> repeatList = ["None", "Daily", "Weekly", "Month"];
+  List<Color> colors = [
+    primarycolor,
+    pinkColor,
+    yellowColor,
+    greenColor,
+  ];
+  int _selectedColor = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,34 +158,59 @@ class _AddTaskPageState extends State<AddTaskPage> {
               Container(
                 margin: const EdgeInsets.only(top: 16.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Color",
-                          style: titleStyle,
-                        ),
-                        Wrap(
-                          children: List<Widget>.generate(3, (index) {
-                            return const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5.0),
-                              child: CircleAvatar(
-                                radius: 14,
-                                backgroundColor: Colors.grey,
-                              ),
-                            );
-                          }),
-                        )
-                      ],
-                    )
+                    _colorPallete(),
+                    MyButton(label: "Create Task", onTap: () {})
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 30,
+                width: double.maxFinite,
               )
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Column _colorPallete() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Color",
+          style: titleStyle,
+        ),
+        SizedBox(height: 8),
+        Wrap(
+          children: List<Widget>.generate(colors.length, (index) {
+            return GestureDetector(
+              onTap: () {
+                _selectedColor = index;
+                setState(() {});
+                print(_selectedColor);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5.0),
+                child: CircleAvatar(
+                  radius: 14,
+                  backgroundColor: colors[index],
+                  child: _selectedColor == index
+                      ? const Icon(
+                          Icons.done,
+                          color: white,
+                          size: 16,
+                        )
+                      : Container(),
+                ),
+              ),
+            );
+          }),
+        )
+      ],
     );
   }
 

@@ -8,6 +8,7 @@ const Color scaffoldBgColor = Color(0xFFE8FDFD);
 const Color darkGreyColor = Color(0xff121212);
 const Color headerColor = Color(0xff424242);
 const Color greyColor = Color(0xffBDBDBD);
+const Color greenColor = Color(0xff4caf50);
 
 const primarycolor = bluishColor;
 
