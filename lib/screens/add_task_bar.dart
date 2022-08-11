@@ -16,6 +16,8 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _noteController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   String _endTime = "9:30 PM";
   String _startTime = DateFormat("hh:mm a").format(DateTime.now());
@@ -29,7 +31,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
     yellowColor,
     greenColor,
   ];
+
   int _selectedColor = 0;
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _noteController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,8 +58,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 "Add Task",
                 style: headingStyle,
               ),
-              const MyInputField(title: "Title", hint: "Enter your task title"),
-              const MyInputField(title: "Note", hint: "Enter your task note"),
+              MyInputField(
+                title: "Title",
+                hint: "Enter your task title",
+                controller: _titleController,
+              ),
+              MyInputField(
+                title: "Note",
+                hint: "Enter your task note",
+                controller: _noteController,
+              ),
               MyInputField(
                 title: "Date",
                 hint: DateFormat.yMd().format(selectedDate),
@@ -161,14 +179,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _colorPallete(),
-                    MyButton(label: "Create Task", onTap: () {})
+                    MyButton(
+                      label: "Create Task",
+                      onTap: () {
+                        _validateData();
+                      },
+                    )
                   ],
                 ),
               ),
-              SizedBox(
-                height: 30,
-                width: double.maxFinite,
-              )
+              const SizedBox(height: 30, width: double.maxFinite),
             ],
           ),
         ),
@@ -286,5 +306,46 @@ class _AddTaskPageState extends State<AddTaskPage> {
               minute: int.parse(_endTime.split(":")[1].split(" ")[0]),
             ),
     );
+  }
+
+  void _validateData() {
+    bool abovePresentDay =
+        selectedDate.isBefore(DateTime.now().subtract(const Duration(days: 1)));
+
+    if (_titleController.text.isNotEmpty &&
+        _noteController.text.isNotEmpty &&
+        !abovePresentDay) {
+      Get.back();
+    } else if (_titleController.text.isEmpty || _noteController.text.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Please fill in all the fields",
+        icon: const Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        borderRadius: 8,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(8),
+        duration: const Duration(seconds: 2),
+      );
+    } else if (abovePresentDay) {
+      Get.snackbar(
+        "Error",
+        "Date must be present day or greater",
+        icon: const Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        borderRadius: 8,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(8),
+        duration: const Duration(seconds: 2),
+      );
+    }
   }
 }

@@ -24,7 +24,7 @@ class Themes {
       buttonTheme: Theme.of(context).buttonTheme.copyWith(
             buttonColor: Colors.green,
           ),
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: scaffoldBgColor,
     );
   }
 
@@ -32,6 +32,7 @@ class Themes {
     return ThemeData(
       primaryColor: headerColor,
       brightness: Brightness.dark,
+      scaffoldBackgroundColor: darkGreyColor,
       backgroundColor: darkGreyColor,
       buttonTheme: Theme.of(context).buttonTheme.copyWith(),
     );
