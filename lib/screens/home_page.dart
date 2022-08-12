@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/const/styles.dart';
 import 'package:flutter_todo_list/const/theme.dart';
+import 'package:flutter_todo_list/controllers/task_controller.dart';
 import 'package:flutter_todo_list/services/notification_services.dart';
 import 'package:flutter_todo_list/services/theme_services.dart';
 import 'package:flutter_todo_list/widgets/button.dart';
@@ -21,6 +22,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late NotifyHelper notifyHelper;
   DateTime selectedDate = DateTime.now();
+  final _taskController = Get.put(TaskController());
   @override
   void initState() {
     notifyHelper = NotifyHelper();
@@ -43,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           _addTaskBar(),
           _addDateBar(),
+          _showTask(),
         ],
       ),
     );
@@ -152,6 +155,25 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         )
       ],
+    );
+  }
+
+  _showTask() {
+    return Expanded(
+      child: Obx(() {
+        print(_taskController.taskList.length);
+        return ListView.builder(
+          itemCount: _taskController.taskList.length,
+          itemBuilder: (_, index) {
+            return Container(
+              width: double.maxFinite,
+              height: 50,
+              color: Colors.green,
+              child: Text(_taskController.taskList[index].title),
+            );
+          },
+        );
+      }),
     );
   }
 }

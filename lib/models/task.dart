@@ -47,6 +47,7 @@ class Task {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['title'] = title;
+    data["note"] = note;
     data['isCompleted'] = isCompleted;
     data['date'] = date;
     data['startTime'] = startTime;
