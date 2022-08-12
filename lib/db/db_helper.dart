@@ -50,4 +50,21 @@ class DBHelper {
     print("Remove Function called");
     await _db!.delete(_tableName, where: "id = ?", whereArgs: [id]);
   }
+
+  // //update task from database
+  // static Future<void> update(Task? task) async {
+  //   print("Update Function called");
+  //   await _db!.update(
+  //     _tableName,
+  //     task!.toJson(),
+  //     where: "id = ?",
+  //     whereArgs: [task.id],
+  //   );
+  // }
+
+  // // delete all tasks from database
+  // static Future<void> deleteAll() async {
+  //   print("Delete All Function called");
+  //   await _db!.delete(_tableName);
+  // }
 }

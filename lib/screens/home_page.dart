@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_todo_list/const/styles.dart';
 import 'package:flutter_todo_list/const/theme.dart';
 import 'package:flutter_todo_list/controllers/task_controller.dart';
+import 'package:flutter_todo_list/models/task.dart';
 import 'package:flutter_todo_list/services/notification_services.dart';
 import 'package:flutter_todo_list/services/theme_services.dart';
 import 'package:flutter_todo_list/widgets/button.dart';
+import 'package:flutter_todo_list/widgets/task_tile.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +31,6 @@ class _MyHomePageState extends State<MyHomePage> {
     notifyHelper = NotifyHelper();
     notifyHelper.initalizeNotification();
     notifyHelper.requestIOSPermission();
-
     super.initState();
   }
 
@@ -162,28 +164,129 @@ class _MyHomePageState extends State<MyHomePage> {
   _showTask() {
     return Expanded(
       child: Obx(() {
-        print(_taskController.taskList.length);
-        return ListView.builder(
-          itemCount: _taskController.taskList.length,
-          itemBuilder: (_, index) {
-            return GestureDetector(
-              onTap: () {
-                _taskController.deleteTask(
-                  id: _taskController.taskList[index].id,
-                );
-              },
-              child: Container(
-                width: double.maxFinite,
-                height: 50,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                color: Color(_taskController.taskList[index].color),
-                child: Text(_taskController.taskList[index].title),
-              ),
-            );
-          },
+        return AnimationLimiter(
+          child: ListView.builder(
+            itemCount: _taskController.taskList.length,
+            itemBuilder: (_, index) {
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                duration: const Duration(milliseconds: 375),
+                child: SlideAnimation(
+                  verticalOffset: 50.0,
+                  child: FadeInAnimation(
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _showBottomSheet(
+                              context,
+                              task: _taskController.taskList[index],
+                            );
+                          },
+                          child:
+                              TaskTile(task: _taskController.taskList[index]),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         );
       }),
+    );
+  }
+
+  void _showBottomSheet(BuildContext context, {required Task task}) {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.only(top: 4),
+        height: task.isCompleted == 1
+            ? MediaQuery.of(context).size.height * .24
+            : MediaQuery.of(context).size.height * .32,
+        color: Get.isDarkMode ? darkGreyColor : white,
+        child: Column(
+          children: [
+            Container(
+              height: 6,
+              width: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Get.isDarkMode ? Colors.grey[600] : Colors.grey[300],
+              ),
+            ),
+            task.isCompleted == 1
+                ? Container()
+                : _bottomSheetButton(
+                    context: context,
+                    label: "Task Completed",
+                    onTap: () {
+                      Get.back();
+                    },
+                    color: primarycolor,
+                  ),
+            _bottomSheetButton(
+              context: context,
+              label: "Delete Task",
+              onTap: () {
+                _taskController.deleteTask(
+                  id: task.id,
+                );
+                Get.back();
+              },
+              color: Colors.red[300]!,
+            ),
+            const SizedBox(height: 10),
+            _bottomSheetButton(
+              context: context,
+              label: "Close",
+              isClose: true,
+              onTap: () {
+                Get.back();
+              },
+              color: white,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _bottomSheetButton(
+      {required String label,
+      required Function() onTap,
+      required Color color,
+      required BuildContext context,
+      bool isClose = false}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        height: 55,
+        width: MediaQuery.of(context).size.width * 0.9,
+        decoration: BoxDecoration(
+          color: isClose ? white : color,
+          border: Border.all(
+            width: 1.0,
+            color: isClose ? greyColor : color,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(20),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: isClose
+                ? titleStyle.copyWith(
+                    fontSize: 16,
+                    color: Get.isDarkMode ? Colors.grey[600] : Colors.grey[500],
+                  )
+                : titleStyle.copyWith(color: white, fontSize: 14),
+          ),
+        ),
+      ),
     );
   }
 }

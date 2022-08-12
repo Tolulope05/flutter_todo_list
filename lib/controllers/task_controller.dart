@@ -27,4 +27,16 @@ class TaskController extends GetxController {
     await DBHelper.delete(id);
     getTasks();
   }
+
+  // // update task from table
+  // Future<void> updateTask({Task? task}) async {
+  //   await DBHelper.update(task);
+  //   getTasks();
+  // }
+
+  // // delete all tasks from table
+  // Future<void> deleteAllTasks() async {
+  //   await DBHelper.deleteAll();
+  //   getTasks();
+  // }
 }
