@@ -28,6 +28,12 @@ class TaskController extends GetxController {
     getTasks();
   }
 
+  //update Status from table
+  Future<void> updateCompletedStatus({id}) async {
+    await DBHelper.updateCompletedStatus(id);
+    getTasks();
+  }
+
   // // update task from table
   // Future<void> updateTask({Task? task}) async {
   //   await DBHelper.update(task);

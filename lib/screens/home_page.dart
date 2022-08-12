@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Container _addDateBar() {
     return Container(
-      margin: const EdgeInsets.only(left: 20.0, top: 20),
+      margin: const EdgeInsets.only(left: 20.0, top: 20, bottom: 15),
       child: DatePicker(
         DateTime.now(),
         height: 100,
@@ -222,6 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     context: context,
                     label: "Task Completed",
                     onTap: () {
+                      _taskController.updateCompletedStatus(id: task.id);
                       Get.back();
                     },
                     color: primarycolor,
