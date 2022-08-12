@@ -214,7 +214,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
               onTap: () {
                 _selectedColor = index;
                 setState(() {});
-                print(_selectedColor);
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 5.0),
