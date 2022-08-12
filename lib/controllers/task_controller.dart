@@ -21,4 +21,10 @@ class TaskController extends GetxController {
     print(tasks);
     taskList.assignAll(tasks.map((data) => Task.fromJson(data)).toList());
   }
+
+  // delete task from table
+  Future<void> deleteTask({id}) async {
+    await DBHelper.delete(id);
+    getTasks();
+  }
 }

@@ -44,4 +44,10 @@ class DBHelper {
     List<Map<String, dynamic>> tasks = await _db!.query(_tableName);
     return tasks;
   }
+
+  // delete task from database
+  static Future<void> delete(int id) async {
+    print("Remove Function called");
+    await _db!.delete(_tableName, where: "id = ?", whereArgs: [id]);
+  }
 }

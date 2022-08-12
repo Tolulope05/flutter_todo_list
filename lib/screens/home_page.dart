@@ -107,8 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           MyButton(
             label: "+ Add Task",
-            onTap: () {
-              Get.to(() => AddTaskPage());
+            onTap: () async {
+              await Get.to(() => const AddTaskPage());
+              _taskController.getTasks(); // refresh task list
             },
           )
         ],
@@ -165,11 +166,20 @@ class _MyHomePageState extends State<MyHomePage> {
         return ListView.builder(
           itemCount: _taskController.taskList.length,
           itemBuilder: (_, index) {
-            return Container(
-              width: double.maxFinite,
-              height: 50,
-              color: Colors.green,
-              child: Text(_taskController.taskList[index].title),
+            return GestureDetector(
+              onTap: () {
+                _taskController.deleteTask(
+                  id: _taskController.taskList[index].id,
+                );
+              },
+              child: Container(
+                width: double.maxFinite,
+                height: 50,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                color: Color(_taskController.taskList[index].color),
+                child: Text(_taskController.taskList[index].title),
+              ),
             );
           },
         );
