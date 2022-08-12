@@ -80,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onDateChange: (date) {
           selectedDate = date;
+          setState(() {});
           print("${DateFormat.yMMMd().format(selectedDate)} Selected");
         },
       ),
@@ -168,29 +169,59 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView.builder(
             itemCount: _taskController.taskList.length,
             itemBuilder: (_, index) {
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                duration: const Duration(milliseconds: 375),
-                child: SlideAnimation(
-                  verticalOffset: 50.0,
-                  child: FadeInAnimation(
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _showBottomSheet(
-                              context,
-                              task: _taskController.taskList[index],
-                            );
-                          },
-                          child:
-                              TaskTile(task: _taskController.taskList[index]),
-                        )
-                      ],
+              Task task = _taskController.taskList[index];
+              print(task.toJson());
+              // Daily repeated tasks
+              if (task.repeat == "Daily") {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              _showBottomSheet(
+                                context,
+                                task: task,
+                              );
+                            },
+                            child: TaskTile(task: task),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              } // selected Date tasks
+              if (task.date == DateFormat.yMd().format(selectedDate)) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              _showBottomSheet(
+                                context,
+                                task: task,
+                              );
+                            },
+                            child: TaskTile(task: task),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                return Container();
+              }
             },
           ),
         );
