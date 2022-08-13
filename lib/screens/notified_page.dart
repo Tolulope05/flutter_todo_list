@@ -10,7 +10,8 @@ class NotifiedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Get.isDarkMode ? Colors.grey[600] : Colors.white,
+        elevation: 0,
+        backgroundColor: Get.isDarkMode ? Colors.grey[800] : Colors.white,
         leading: IconButton(
           onPressed: () {
             Get.back();
@@ -21,12 +22,30 @@ class NotifiedPage extends StatelessWidget {
           ),
         ),
         title: Text(
-          payload!.split("|")[0],
+          "MY TODO",
           style: titleStyle,
         ),
       ),
-      body: Center(
-        child: Text(payload!.split("|")[1]),
+      body: Container(
+        width: double.maxFinite,
+        // height: 400,
+        margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Get.isDarkMode ? Colors.black38 : Colors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              payload!.split("|")[0],
+              style: titleStyle,
+            ),
+            const SizedBox(height: 20),
+            Text(payload!.split("|")[1]),
+          ],
+        ),
       ),
     );
   }
