@@ -126,9 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
       elevation: 0,
       leading: IconButton(
           onPressed: () {
-            // Get.isDarkMode
-            //     ? Get.changeTheme(Themes.light(context))
-            //     : Get.changeTheme(Themes.dark(context));
             ThemeServies().switchtheme();
             notifyHelper.displayNotification(
               title: "Theme Changed",
@@ -136,10 +133,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ? "Light Mode activated!"
                   : "Dark Mode activated!",
             );
-            notifyHelper.displayScheduledNotification(
-              title: "Wake up",
-              body: "Time to read!",
-            );
+            // notifyHelper.displayScheduledNotification(
+            //   title: "Wake up",
+            //   body: "Time to read!",
+            // );
             setState(() {});
           },
           icon: Icon(
@@ -173,6 +170,15 @@ class _MyHomePageState extends State<MyHomePage> {
               print(task.toJson());
               // Daily repeated tasks
               if (task.repeat == "Daily") {
+                // convert string to DateTime.
+                DateTime date = DateFormat.jm().parse(task.startTime);
+                var mytime =
+                    DateFormat("HH:mm").format(date); //get Time from date
+                // THIS INTURN TURNS 04:17 PM to 16:17
+                notifyHelper.displayScheduledNotification(
+                    task: task,
+                    hour: int.parse(mytime.split(":").first),
+                    minute: int.parse(mytime.split(":").last));
                 return AnimationConfiguration.staggeredList(
                   position: index,
                   duration: const Duration(milliseconds: 505),

@@ -18,7 +18,6 @@ class TaskController extends GetxController {
   // get all the data from table
   Future<void> getTasks() async {
     List<Map<String, dynamic>> tasks = await DBHelper.query();
-    print(tasks);
     taskList.assignAll(tasks.map((data) => Task.fromJson(data)).toList());
   }
 

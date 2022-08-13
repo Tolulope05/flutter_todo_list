@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_todo_list/screens/home_page.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
+
+import '../models/task.dart';
 
 class NotifyHelper {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -11,7 +14,7 @@ class NotifyHelper {
 
   initalizeNotification() async {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-    tz.initializeTimeZones();
+    _configureLocalTimeZone();
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('launcher_icon');
     final IOSInitializationSettings initializationSettingsIOS =
@@ -108,24 +111,53 @@ class NotifyHelper {
   }
 
   void displayScheduledNotification({
-    required String title,
-    required String body,
+    required int hour,
+    required int minute,
+    Task? task,
   }) async {
-    // tz.setLocalLocation(tz.getLocation(timeZoneName));
+    // tz.setLocalLocation(tz.getLocation("Africa/Lagos"));
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      title,
-      body,
-      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-      const NotificationDetails(
+        0,
+        task!.title,
+        task.note,
+        // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+        _convertTime(hour, minute),
+        const NotificationDetails(
           android: AndroidNotificationDetails(
-        'your channel id',
-        'your channel name',
-        channelDescription: 'your channel description',
-      )),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
+            'your channel id',
+            'your channel name',
+            channelDescription: 'your channel description',
+          ),
+        ),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents:
+            DateTimeComponents.time // Gets daiy notification for this time
+        // checkout other methods DateTimecomponents have.
+        );
+  }
+
+  Future<void> _configureLocalTimeZone() async {
+    tz.initializeTimeZones();
+    final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZone));
+  }
+
+  // Dynamic time convert.
+  tz.TZDateTime _convertTime(int hour, int minute) {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduleDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
     );
+    if (scheduleDate.isBefore(now)) {
+      scheduleDate = scheduleDate.add(const Duration(days: 1));
+    } // This is the scheduled timing const.
+    return scheduleDate;
   }
 }
