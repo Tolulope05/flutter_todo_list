@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_todo_list/screens/home_page.dart';
+import 'package:flutter_todo_list/screens/notified_page.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
@@ -80,7 +81,11 @@ class NotifyHelper {
     //   context,
     //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
     // );
-    Get.to(() => const MyHomePage());
+    if (payload == "item x") {
+      Get.to(() => const MyHomePage());
+    } else {
+      Get.to(() => NotifiedPage(payload: payload));
+    }
   }
 
   void displayNotification({
@@ -117,25 +122,26 @@ class NotifyHelper {
   }) async {
     // tz.setLocalLocation(tz.getLocation("Africa/Lagos"));
     await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        task!.title,
-        task.note,
-        // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-        _convertTime(hour, minute),
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'your channel id',
-            'your channel name',
-            channelDescription: 'your channel description',
-          ),
+      task!.id!.toInt(),
+      task.title,
+      task.note,
+      // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+      _convertTime(hour, minute),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'your channel id',
+          'your channel name',
+          channelDescription: 'your channel description',
         ),
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents:
-            DateTimeComponents.time // Gets daiy notification for this time
-        // checkout other methods DateTimecomponents have.
-        );
+      ),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents:
+          DateTimeComponents.time, // Gets daiy notification for this time
+      // checkout other methods DateTimecomponents have.
+      payload: "${task.title}|${task.note}|",
+    );
   }
 
   Future<void> _configureLocalTimeZone() async {
