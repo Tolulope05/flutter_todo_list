@@ -70,9 +70,9 @@ class DBHelper {
   //   );
   // }
 
-  // // delete all tasks from database
-  // static Future<void> deleteAll() async {
-  //   print("Delete All Function called");
-  //   await _db!.delete(_tableName);
-  // }
+  // delete all tasks from database
+  static Future<void> deleteAll() async {
+    print("Delete All Function called");
+    await _db!.delete(_tableName);
+  }
 }

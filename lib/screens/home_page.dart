@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           _showTask(),
         ],
       ),
-      drawer: Drawer(child: drawerItems),
+      drawer: _drawer(),
     );
   }
 
@@ -325,23 +325,28 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  var drawerItems = ListView(
-    children: [
-      const UserAccountsDrawerHeader(
-        accountName: Text("Welcome"),
-        accountEmail: Text("accountEmail@gmail.com"),
-        currentAccountPicture: CircleAvatar(
-          backgroundImage: AssetImage("assets/images/profile.png"),
-        ),
+  Drawer _drawer() {
+    return Drawer(
+      child: ListView(
+        children: [
+          const UserAccountsDrawerHeader(
+            accountName: Text("Welcome"),
+            accountEmail: Text("accountEmail@gmail.com"),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: AssetImage("assets/images/profile.png"),
+            ),
+          ),
+          ListTile(
+            title: const Text(
+              "Clear All Task",
+            ),
+            leading: const Icon(Icons.delete),
+            onTap: () {
+              _taskController.deleteAllTasks();
+            },
+          ),
+        ],
       ),
-      ListTile(
-        title: const Text(
-          "Clear All",
-        ),
-        leading: const Icon(Icons.delete),
-        onTap: () {},
-      ),
-      ListTile()
-    ],
-  );
+    );
+  }
 }
