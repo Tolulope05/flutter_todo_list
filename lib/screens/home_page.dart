@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           _showTask(),
         ],
       ),
+      drawer: Drawer(child: drawerItems),
     );
   }
 
@@ -122,37 +123,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
+      iconTheme: IconThemeData(
+        color: Get.isDarkMode ? Colors.white : Colors.black,
+      ),
       backgroundColor: Theme.of(context).backgroundColor,
       elevation: 0,
-      leading: IconButton(
-          onPressed: () {
-            ThemeServies().switchtheme();
-            notifyHelper.displayNotification(
-              title: "Theme Changed",
-              body: Get.isDarkMode
-                  ? "Light Mode activated!"
-                  : "Dark Mode activated!",
-            );
-            // notifyHelper.displayScheduledNotification(
-            //   title: "Wake up",
-            //   body: "Time to read!",
-            // );
-            setState(() {});
-          },
-          icon: Icon(
-            Get.isDarkMode
-                ? Icons.dark_mode_outlined
-                : Icons.light_mode_outlined,
-            color: Get.isDarkMode ? Colors.white : Colors.black,
-          )),
       title: const Text("TODO LIST"),
       centerTitle: true,
-      actions: const [
+      actions: [
         Padding(
-          padding: EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            // backgroundColor: Colors.transparent,
-            backgroundImage: AssetImage("assets/images/profile.png"),
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(
+            onPressed: () {
+              ThemeServies().switchtheme();
+              notifyHelper.displayNotification(
+                title: "Theme Changed",
+                body: Get.isDarkMode
+                    ? "Light Mode activated!"
+                    : "Dark Mode activated!",
+              );
+              setState(() {});
+            },
+            icon: Icon(
+              Get.isDarkMode
+                  ? Icons.dark_mode_outlined
+                  : Icons.light_mode_outlined,
+              color: Get.isDarkMode ? Colors.white : Colors.black,
+            ),
           ),
         )
       ],
@@ -327,4 +324,24 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  var drawerItems = ListView(
+    children: [
+      const UserAccountsDrawerHeader(
+        accountName: Text("Welcome"),
+        accountEmail: Text("accountEmail@gmail.com"),
+        currentAccountPicture: CircleAvatar(
+          backgroundImage: AssetImage("assets/images/profile.png"),
+        ),
+      ),
+      ListTile(
+        title: const Text(
+          "Clear All",
+        ),
+        leading: const Icon(Icons.delete),
+        onTap: () {},
+      ),
+      ListTile()
+    ],
+  );
 }
