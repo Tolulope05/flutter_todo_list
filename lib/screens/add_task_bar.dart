@@ -70,6 +70,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 title: "Note",
                 hint: "Enter your task note",
                 controller: _noteController,
+                isNote: true,
               ),
               MyInputField(
                 title: "Date",

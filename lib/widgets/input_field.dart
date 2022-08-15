@@ -8,6 +8,7 @@ class MyInputField extends StatelessWidget {
   final String hint;
   final TextEditingController? controller;
   final Widget? widget;
+  final bool isNote;
 
   const MyInputField({
     Key? key,
@@ -15,6 +16,7 @@ class MyInputField extends StatelessWidget {
     required this.hint,
     this.controller,
     this.widget,
+    this.isNote = false,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class MyInputField extends StatelessWidget {
             style: titleStyle,
           ),
           Container(
-            height: 52,
+            height: isNote ? 100 : 52,
             margin: const EdgeInsets.only(top: 8.0),
             padding: const EdgeInsets.only(left: 8.0),
             width: double.maxFinite,
@@ -49,6 +51,7 @@ class MyInputField extends StatelessWidget {
                     readOnly: widget != null,
                     controller: controller,
                     autofocus: false,
+                    maxLines: isNote ? 3 : null,
                     style: subTitleStyle,
                     cursorColor:
                         Get.isDarkMode ? Colors.grey[100] : Colors.grey[700],
