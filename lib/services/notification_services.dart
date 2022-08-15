@@ -116,6 +116,9 @@ class NotifyHelper {
   }
 
   void displayScheduledNotification({
+    required int year,
+    required int month,
+    required int day,
     required int hour,
     required int minute,
     Task? task,
@@ -126,7 +129,13 @@ class NotifyHelper {
       task.title,
       task.note,
       // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-      _convertTime(hour, minute),
+      _convertTime(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+      ),
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'your channel id',
@@ -151,13 +160,19 @@ class NotifyHelper {
   }
 
   // Dynamic time convert.
-  tz.TZDateTime _convertTime(int hour, int minute) {
+  tz.TZDateTime _convertTime(
+    int year,
+    int month,
+    int day,
+    int hour,
+    int minute,
+  ) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduleDate = tz.TZDateTime(
       tz.local,
-      now.year,
-      now.month,
-      now.day,
+      year,
+      month,
+      day,
       hour,
       minute,
     );

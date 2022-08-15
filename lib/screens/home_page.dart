@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_todo_list/const/styles.dart';
 import 'package:flutter_todo_list/const/theme.dart';
 import 'package:flutter_todo_list/controllers/task_controller.dart';
@@ -159,74 +158,58 @@ class _MyHomePageState extends State<MyHomePage> {
   _showTask() {
     return Expanded(
       child: Obx(() {
-        return AnimationLimiter(
-          child: ListView.builder(
-            itemCount: _taskController.taskList.length,
-            itemBuilder: (_, index) {
-              Task task = _taskController.taskList[index];
-              print(task.toJson());
-              // convert string to DateTime.
-              DateTime date = DateFormat.jm().parse(task.startTime);
-              var mytime =
-                  DateFormat("HH:mm").format(date); //get Time from date
-              // THIS INTURN TURNS 04:17 PM to 16:17
-              notifyHelper.displayScheduledNotification(
-                  task: task,
-                  hour: int.parse(mytime.split(":").first),
-                  minute: int.parse(mytime.split(":").last));
-              // Daily repeated tasks
-              if (task.repeat == "Daily") {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 505),
-                  child: SlideAnimation(
-                    verticalOffset: 50.0,
-                    child: FadeInAnimation(
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              _showBottomSheet(
-                                context,
-                                task: task,
-                              );
-                            },
-                            child: TaskTile(task: task),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              } // selected Date tasks
-              if (task.date == DateFormat.yMd().format(selectedDate)) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 375),
-                  child: SlideAnimation(
-                    verticalOffset: 50.0,
-                    child: FadeInAnimation(
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              _showBottomSheet(
-                                context,
-                                task: task,
-                              );
-                            },
-                            child: TaskTile(task: task),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            },
-          ),
+        return ListView.builder(
+          itemCount: _taskController.taskList.length,
+          itemBuilder: (_, index) {
+            Task task = _taskController.taskList[index];
+            print(task.toJson());
+            // convert string to DateTime.
+
+            DateTime date = DateFormat.jm().parse(task.startTime);
+            String mmDdYyyy = task.date;
+            var mytime = DateFormat("HH:mm").format(date); //get Time from date
+            // THIS INTURN TURNS 04:17 PM to 16:17
+            notifyHelper.displayScheduledNotification(
+                year: int.parse(mmDdYyyy.split("/")[2]),
+                month: int.parse(mmDdYyyy.split("/")[0]),
+                day: int.parse(mmDdYyyy.split("/")[1]),
+                task: task,
+                hour: int.parse(mytime.split(":").first),
+                minute: int.parse(mytime.split(":").last));
+            // Daily repeated tasks
+            if (task.repeat == "Daily") {
+              return Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      _showBottomSheet(
+                        context,
+                        task: task,
+                      );
+                    },
+                    child: TaskTile(task: task),
+                  )
+                ],
+              );
+            } // selected Date tasks
+            if (task.date == DateFormat.yMd().format(selectedDate)) {
+              return Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      _showBottomSheet(
+                        context,
+                        task: task,
+                      );
+                    },
+                    child: TaskTile(task: task),
+                  )
+                ],
+              );
+            } else {
+              return Container();
+            }
+          },
         );
       }),
     );
