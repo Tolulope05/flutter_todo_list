@@ -166,7 +166,10 @@ class _MyHomePageState extends State<MyHomePage> {
             // convert string to DateTime.
 
             DateTime date = DateFormat.jm().parse(task.startTime);
+
             String mmDdYyyy = task.date;
+            DateTime day = DateFormat.yMd().parse(mmDdYyyy);
+            print(day);
             var mytime = DateFormat("HH:mm").format(date); //get Time from date
             // THIS INTURN TURNS 04:17 PM to 16:17
             notifyHelper.displayScheduledNotification(
@@ -192,6 +195,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               );
             } // selected Date tasks
+            if (task.repeat == "Weekly") {
+              
+            }
+
+            if (day.add(const Duration(days: 7)) == selectedDate) {
+              return Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      _showBottomSheet(
+                        context,
+                        task: task,
+                      );
+                    },
+                    child: TaskTile(task: task),
+                  )
+                ],
+              );
+            }
+
+            if (task.repeat == "Montly") {}
             if (task.date == DateFormat.yMd().format(selectedDate)) {
               return Row(
                 children: [
