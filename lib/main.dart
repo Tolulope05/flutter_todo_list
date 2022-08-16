@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'TODO LIST',
+      title: 'TODO',
       theme: Themes.light(context),
       darkTheme: Themes.dark(context),
       themeMode: ThemeServies().theme,
