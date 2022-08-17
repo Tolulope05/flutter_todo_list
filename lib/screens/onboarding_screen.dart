@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/const/styles.dart';
 import 'package:flutter_todo_list/screens/home_page.dart';
+import 'package:flutter_todo_list/services/fingerprint_services.dart';
+import 'package:flutter_todo_list/services/screenLock_services.dart';
 import 'package:get/get.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
@@ -11,6 +13,9 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool authstate = FingerPrintServices().loadPrintFromBox();
+    print(authstate);
+
     return IntroductionScreen(
       done: Text(
         "Home",
@@ -43,7 +48,11 @@ class OnBoardingScreen extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Get.to(() => const MyHomePage());
+              if (authstate) {
+                ScreenLock(ctx: context).authenticateUser(path: "splash");
+              } else {
+                Get.to(() => const MyHomePage());
+              }
             },
             child: Text(
               "Get started",
@@ -53,20 +62,28 @@ class OnBoardingScreen extends StatelessWidget {
           image: buildImage(imageUrl: "assets/images/onboarding_image_4.png"),
         ),
       ],
-      next: Icon(Icons.arrow_forward_ios),
+      next: const Icon(Icons.arrow_forward_ios),
       skip: Text(
         "Skip",
         style: titleStyle.copyWith(fontSize: 16),
       ),
       onSkip: () {
-        Get.to(() => const MyHomePage());
+        if (authstate) {
+          ScreenLock(ctx: context).authenticateUser(path: "splash");
+        } else {
+          Get.to(() => const MyHomePage());
+        }
       },
       onDone: () {
-        Get.to(() => const MyHomePage());
+        if (authstate) {
+          ScreenLock(ctx: context).authenticateUser(path: "splash");
+        } else {
+          Get.to(() => const MyHomePage());
+        }
       },
       showSkipButton: true,
       dotsDecorator: getDotDecoration(),
-      animationDuration: 1000,
+      animationDuration: 200,
     );
   }
 

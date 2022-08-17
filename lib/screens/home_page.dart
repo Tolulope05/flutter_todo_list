@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 
+import '../services/screenLock_services.dart';
 import 'add_task_bar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -368,10 +369,12 @@ class _MyHomePageState extends State<MyHomePage> {
             trailing: Switch(
               activeColor: bluishColor,
               value: _secured,
-              onChanged: (value) {
-                _secured = value;
-                fingerPrintServices.savePrintToBox(_secured);
-                setState(() {});
+              onChanged: (value) async {
+                bool? returnValue = await ScreenLock(ctx: context)
+                    .authenticateUser(authState: value);
+                setState(() {
+                  _secured = returnValue!;
+                });
               },
             ),
           ),
