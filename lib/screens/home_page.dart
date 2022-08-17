@@ -184,8 +184,6 @@ class _MyHomePageState extends State<MyHomePage> {
             var mytime = DateFormat("HH:mm").format(date); //get Time from date
             // THIS INTURN TURNS 04:17 PM to 16:17
             notifyHelper.displayScheduledNotification(
-                year: int.parse(mmDdYyyy.split("/")[2]),
-                month: int.parse(mmDdYyyy.split("/")[0]),
                 day: int.parse(mmDdYyyy.split("/")[1]),
                 task: task,
                 hour: int.parse(mytime.split(":").first),

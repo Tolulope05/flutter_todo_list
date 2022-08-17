@@ -116,8 +116,6 @@ class NotifyHelper {
   }
 
   void displayScheduledNotification({
-    required int year,
-    required int month,
     required int day,
     required int hour,
     required int minute,
@@ -128,14 +126,18 @@ class NotifyHelper {
       task!.id!.toInt(),
       task.title,
       task.note,
-      // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-      _convertTime(
-        year,
-        month,
-        day,
-        hour,
-        minute,
-      ),
+      tz.TZDateTime.now(tz.local).add(Duration(
+        days: day - tz.TZDateTime.now(tz.local).day,
+        hours: hour - tz.TZDateTime.now(tz.local).hour,
+        minutes: minute - tz.TZDateTime.now(tz.local).minute,
+      )),
+      // _convertTime(
+      //   year,
+      //   month,
+      //   day,
+      //   hour,
+      //   minute,
+      // ),
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'your channel id',
@@ -160,29 +162,30 @@ class NotifyHelper {
   }
 
   // Dynamic time convert.
-  tz.TZDateTime _convertTime(
-    int year,
-    int month,
-    int day,
-    int hour,
-    int minute,
-  ) {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduleDate = tz.TZDateTime(
-      tz.local,
-      year,
-      month,
-      day,
-      hour,
-      minute,
-    );
-    if (scheduleDate.isBefore(now)) {
-      scheduleDate = now.add(Duration(
-        days: day,
-        hours: hour,
-        minutes: minute,
-      ));
-    } // This is the scheduled timing const.
-    return scheduleDate;
-  }
+  // tz.TZDateTime _convertTime(
+  //   int year,
+  //   int month,
+  //   int day,
+  //   int hour,
+  //   int minute,
+  // ) {
+  //   final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+  //   tz.TZDateTime scheduleDate = tz.TZDateTime(
+  //     tz.local,
+  //     year,
+  //     month,
+  //     day,
+  //     hour,
+  //     minute,
+  //   );
+  //   if (scheduleDate.isBefore(now)) {
+  //     scheduleDate = now.add(Duration(
+  //       days: day - now.day,
+  //       hours: hour,
+  //       minutes: minute,
+  //     ));
+  //   } // This is the scheduled timing const.
+  //   print("Schedule timme: $scheduleDate");
+  //   return scheduleDate;
+  // }
 }
