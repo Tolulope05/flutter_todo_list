@@ -208,7 +208,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           "Color",
           style: titleStyle,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Wrap(
           children: List<Widget>.generate(colors.length, (index) {
             return GestureDetector(

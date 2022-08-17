@@ -3,6 +3,7 @@ import 'package:flutter_todo_list/const/styles.dart';
 import 'package:flutter_todo_list/const/theme.dart';
 import 'package:flutter_todo_list/controllers/task_controller.dart';
 import 'package:flutter_todo_list/models/task.dart';
+import 'package:flutter_todo_list/screens/update_task_bar.dart';
 import 'package:flutter_todo_list/services/fingerprint_services.dart';
 import 'package:flutter_todo_list/services/notification_services.dart';
 import 'package:flutter_todo_list/services/theme_services.dart';
@@ -173,12 +174,10 @@ class _MyHomePageState extends State<MyHomePage> {
             Task task = _taskController.taskList[index];
             print(task.toJson());
             // convert string to DateTime.
-
             DateTime date = DateFormat.jm().parse(task.startTime);
 
             String mmDdYyyy = task.date;
             DateTime day = DateFormat.yMd().parse(mmDdYyyy);
-            print(day);
             var mytime = DateFormat("HH:mm").format(date); //get Time from date
             // THIS INTURN TURNS 04:17 PM to 16:17
             notifyHelper.displayScheduledNotification(
@@ -289,10 +288,11 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 10),
             _bottomSheetButton(
               context: context,
-              label: "Close",
+              label: "Edit Task",
               isClose: true,
               onTap: () {
                 Get.back();
+                Get.to(() => UpdateTaskPage(task: task));
               },
               color: white,
             ),

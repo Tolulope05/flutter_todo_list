@@ -59,16 +59,16 @@ class DBHelper {
     ''', [1, id]);
   }
 
-  // //update task from database
-  // static Future<void> update(Task? task) async {
-  //   print("Update Function called");
-  //   await _db!.update(
-  //     _tableName,
-  //     task!.toJson(),
-  //     where: "id = ?",
-  //     whereArgs: [task.id],
-  //   );
-  // }
+  //update task from database
+  static Future<void> update(Task? task) async {
+    print("Update Function called");
+    await _db!.update(
+      _tableName,
+      task!.toJson(),
+      where: "id = ?",
+      whereArgs: [task.id],
+    );
+  }
 
   // delete all tasks from database
   static Future<void> deleteAll() async {

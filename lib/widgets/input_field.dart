@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 class MyInputField extends StatelessWidget {
   final String title;
   final String hint;
+  final String? updateValue;
   final TextEditingController? controller;
   final Widget? widget;
   final bool isNote;
@@ -14,6 +15,7 @@ class MyInputField extends StatelessWidget {
     Key? key,
     required this.title,
     required this.hint,
+    this.updateValue,
     this.controller,
     this.widget,
     this.isNote = false,
@@ -21,6 +23,9 @@ class MyInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (updateValue != null) {
+      controller!.text = updateValue!;
+    }
     return Container(
       margin: const EdgeInsets.only(top: 16.0),
       child: Column(

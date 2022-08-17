@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_todo_list/const/theme.dart';
 import 'package:flutter_todo_list/db/db_helper.dart';
 import 'package:flutter_todo_list/models/task.dart';
 import 'package:get/get.dart';
@@ -33,11 +35,11 @@ class TaskController extends GetxController {
     getTasks();
   }
 
-  // // update task from table
-  // Future<void> updateTask({Task? task}) async {
-  //   await DBHelper.update(task);
-  //   getTasks();
-  // }
+  // update task from table
+  Future<void> updateTask({Task? task}) async {
+    await DBHelper.update(task);
+    getTasks();
+  }
 
   // delete all tasks from table
   Future<void> deleteAllTasks() async {
