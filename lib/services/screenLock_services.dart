@@ -28,45 +28,33 @@ class ScreenLock {
         // Some biometrics are enrolled.
         print(availableBiometrics);
       }
-      if (Platform.isAndroid) {
-        if (availableBiometrics.contains(BiometricType.strong) ||
-            availableBiometrics.contains(BiometricType.face)) {
-          // Specific types of biometrics are available.
-          // Use checks like this with caution!
-          // Face id
-          try {
-            final bool didAuthenticate = await auth.authenticate(
-                localizedReason: 'Please authenticate to access your App');
-            // ···
-            if (path == "splash") {
-              if (didAuthenticate) {
-                Get.to(() => const MyHomePage());
-              } else {
-                // SystemNavigator.pop(); //This close to app entirely.
-              }
+
+      if (availableBiometrics.contains(BiometricType.strong) ||
+          availableBiometrics.contains(BiometricType.face)) {
+        // Specific types of biometrics are available.
+        // Use checks like this with caution!
+        // Face id
+        try {
+          final bool didAuthenticate = await auth.authenticate(
+              localizedReason: 'Please authenticate to access your App');
+          // ···
+          if (path == "splash") {
+            if (didAuthenticate) {
+              Get.to(() => const MyHomePage());
             } else {
-              if (didAuthenticate) {
-                // save auth state!
-                if (authState != null) {
-                  fingerPrintServices.savePrintToBox(authState);
-                  return authState;
-                }
+              // SystemNavigator.pop(); //This close to app entirely.
+            }
+          } else {
+            if (didAuthenticate) {
+              // save auth state!
+              if (authState != null) {
+                fingerPrintServices.savePrintToBox(authState);
+                return authState;
               }
             }
-          } on PlatformException {
-            // To accept fall back to pin!
           }
-        } else if (availableBiometrics.contains(BiometricType.strong) ||
-            availableBiometrics.contains(BiometricType.fingerprint)) {
-          // Touch ID
-
-        }
-      } else if (Platform.isIOS) {
-        if (availableBiometrics.contains(BiometricType.strong) ||
-            availableBiometrics.contains(BiometricType.face)) {
-          // Specific types of biometrics are available.
-          // Use checks like this with caution!
-          // Face id
+        } on PlatformException {
+          // To accept fall back to pin!
         }
       }
     }
