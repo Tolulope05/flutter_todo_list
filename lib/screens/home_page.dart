@@ -3,6 +3,7 @@ import 'package:flutter_todo_list/const/styles.dart';
 import 'package:flutter_todo_list/const/theme.dart';
 import 'package:flutter_todo_list/controllers/task_controller.dart';
 import 'package:flutter_todo_list/models/task.dart';
+import 'package:flutter_todo_list/services/fingerprint_services.dart';
 import 'package:flutter_todo_list/services/notification_services.dart';
 import 'package:flutter_todo_list/services/theme_services.dart';
 import 'package:flutter_todo_list/widgets/button.dart';
@@ -23,13 +24,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late NotifyHelper notifyHelper;
+  late FingerPrintServices fingerPrintServices;
   DateTime selectedDate = DateTime.now();
   final _taskController = Get.put(TaskController());
+  bool _secured = false;
   @override
   void initState() {
     notifyHelper = NotifyHelper();
     notifyHelper.initalizeNotification();
     notifyHelper.requestIOSPermission();
+    fingerPrintServices = FingerPrintServices();
+    bool authValue = fingerPrintServices.loadPrintFromBox();
+    setState(() {
+      _secured = authValue;
+    });
     super.initState();
   }
 
@@ -195,9 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               );
             } // selected Date tasks
-            if (task.repeat == "Weekly") {
-              
-            }
+            if (task.repeat == "Weekly") {}
 
             if (day.add(const Duration(days: 7)) == selectedDate) {
               return Row(
@@ -337,8 +343,8 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ListView(
         children: [
           const UserAccountsDrawerHeader(
-            accountName: Text("Welcome"),
-            accountEmail: Text("accountEmail@gmail.com"),
+            accountName: Text("TODO"),
+            accountEmail: Text("Plan your task today!"),
             currentAccountPicture: CircleAvatar(
               backgroundImage: AssetImage("assets/images/profile.png"),
             ),
@@ -351,6 +357,23 @@ class _MyHomePageState extends State<MyHomePage> {
             onTap: () {
               _taskController.deleteAllTasks();
             },
+          ),
+          ListTile(
+            title: const Text(
+              "Secure App",
+            ),
+            leading: const Icon(Icons.fingerprint),
+            onTap: () {},
+            subtitle: const Text("Enable Finger Print"),
+            trailing: Switch(
+              activeColor: bluishColor,
+              value: _secured,
+              onChanged: (value) {
+                _secured = value;
+                fingerPrintServices.savePrintToBox(_secured);
+                setState(() {});
+              },
+            ),
           ),
         ],
       ),

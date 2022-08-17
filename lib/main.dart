@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
       theme: Themes.light(context),
       darkTheme: Themes.dark(context),
       themeMode: ThemeServies().theme,
-      // home: const MyHomePage(),
-      home: const OnBoardingScreen(),
+      home: const MyHomePage(),
+      // home: const OnBoardingScreen(),
     );
   }
 }
