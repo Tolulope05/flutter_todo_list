@@ -177,7 +177,11 @@ class NotifyHelper {
       minute,
     );
     if (scheduleDate.isBefore(now)) {
-      scheduleDate = scheduleDate.add(const Duration(days: 1));
+      scheduleDate = now.add(Duration(
+        days: day,
+        hours: hour,
+        minutes: minute,
+      ));
     } // This is the scheduled timing const.
     return scheduleDate;
   }
