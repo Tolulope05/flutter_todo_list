@@ -137,7 +137,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       elevation: 0,
-      title: const Text("TODO LIST"),
+      title: Text(
+        "TODO",
+        style: TextStyle(color: Get.isDarkMode ? Colors.white : Colors.black),
+      ),
       centerTitle: true,
       actions: [
         Padding(
@@ -345,7 +348,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           const UserAccountsDrawerHeader(
             accountName: Text("TODO"),
-            accountEmail: Text("Plan your task today!"),
+            accountEmail: Text("Plan your task and make note!"),
             currentAccountPicture: CircleAvatar(
               backgroundImage: AssetImage("assets/images/profile.png"),
             ),
