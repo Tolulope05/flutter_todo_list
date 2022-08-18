@@ -91,7 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
         onDateChange: (date) {
           selectedDate = date;
           setState(() {});
-          print("${DateFormat.yMMMd().format(selectedDate)} Selected");
+          // print("${DateFormat.yMMMd().format(selectedDate)} Selected");
+          print(selectedDate);
         },
       ),
     );
@@ -178,10 +179,10 @@ class _MyHomePageState extends State<MyHomePage> {
             print(task.toJson());
             // convert string to DateTime.
             DateTime date = DateFormat.jm().parse(task.startTime);
-
             String mmDdYyyy = task.date;
             DateTime day = DateFormat.yMd().parse(mmDdYyyy);
             var mytime = DateFormat("HH:mm").format(date); //get Time from date
+            print(day.weekday);
             // THIS INTURN TURNS 04:17 PM to 16:17
             notifyHelper.displayScheduledNotification(
                 day: int.parse(mmDdYyyy.split("/")[1]),
@@ -204,25 +205,60 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               );
             } // selected Date tasks
-            if (task.repeat == "Weekly") {}
-
-            if (day.add(const Duration(days: 7)) == selectedDate) {
-              return Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      _showBottomSheet(
-                        context,
-                        task: task,
-                      );
-                    },
-                    child: TaskTile(task: task),
-                  )
-                ],
-              );
+            // Task display once in 7 days
+            else if (task.repeat == "Weekly") {
+              if (day.weekday == selectedDate.weekday) {
+                return Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _showBottomSheet(
+                          context,
+                          task: task,
+                        );
+                      },
+                      child: TaskTile(task: task),
+                    )
+                  ],
+                );
+              }
+            } // selected Date tasks
+            else if (task.repeat == "Monthly") {
+              if (day.day == selectedDate.day) {
+                return Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _showBottomSheet(
+                          context,
+                          task: task,
+                        );
+                      },
+                      child: TaskTile(task: task),
+                    )
+                  ],
+                );
+              }
+            } // selected Date tasks
+            else if (task.repeat == "Yearly") {
+              if (day.day == selectedDate.day &&
+                  day.month == selectedDate.month) {
+                return Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _showBottomSheet(
+                          context,
+                          task: task,
+                        );
+                      },
+                      child: TaskTile(task: task),
+                    )
+                  ],
+                );
+              }
             }
-
-            if (task.repeat == "Montly") {}
+            // Matching days task!
             if (task.date == DateFormat.yMd().format(selectedDate)) {
               return Row(
                 children: [
@@ -239,7 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             } else {
               return Container();
-            }
+            } // Matching days task!
           },
         );
       }),
