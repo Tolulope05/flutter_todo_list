@@ -1,16 +1,6 @@
-# flutter_todo_list
+# TODO
 
-A new Flutter project.
+With the ToDo you can quickly write a task, make to-do list, set a reminder. The app is lightweight and provides good performance. It has a completed mark which may be useful for marking done tasks.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The app is able to store your daily tasks. You can use it instead of a notepad or notebook.
+The app provides security to secure your tasks.
