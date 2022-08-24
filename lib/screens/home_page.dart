@@ -393,7 +393,35 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             leading: const Icon(Icons.delete),
             onTap: () {
-              _taskController.deleteAllTasks();
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: const Text("Are you sure you?"),
+                  content:
+                      const Text("All Task once deleted cannot be recovered!"),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: const Text("No"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            _taskController.deleteAllTasks();
+                            Get.back();
+                            Get.snackbar("", "Task deleted successfully");
+                          },
+                          child: const Text("Yes"),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              );
             },
           ),
           ListTile(
