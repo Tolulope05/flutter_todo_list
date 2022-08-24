@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 import '../const/theme.dart';
+import '../services/one_time_intro_services.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -52,6 +53,7 @@ class OnBoardingScreen extends StatelessWidget {
                 ScreenLock(ctx: context).authenticateUser(path: "splash");
               } else {
                 Get.to(() => const MyHomePage());
+                IntroducationStatus().saveIntroService(true);
               }
             },
             child: Text(
@@ -73,6 +75,7 @@ class OnBoardingScreen extends StatelessWidget {
         } else {
           Get.to(() => const MyHomePage());
         }
+        IntroducationStatus().saveIntroService(true);
       },
       onDone: () {
         if (authstate) {
@@ -80,6 +83,7 @@ class OnBoardingScreen extends StatelessWidget {
         } else {
           Get.to(() => const MyHomePage());
         }
+        IntroducationStatus().saveIntroService(true);
       },
       showSkipButton: true,
       dotsDecorator: getDotDecoration(),

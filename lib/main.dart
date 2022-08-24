@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_list/db/db_helper.dart';
-import 'package:flutter_todo_list/screens/onboarding_screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import './const/theme.dart';
-import './screens/home_page.dart';
 import './services/theme_services.dart';
+import 'services/one_time_intro_services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.dark(context),
       themeMode: ThemeServies().theme,
       // home: const MyHomePage(),
-      home: const OnBoardingScreen(),
+      home: IntroducationStatus().getWidgetStatefromBox,
     );
   }
 }
