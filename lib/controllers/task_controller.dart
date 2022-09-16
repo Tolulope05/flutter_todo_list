@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_todo_list/const/theme.dart';
 import 'package:flutter_todo_list/db/db_helper.dart';
 import 'package:flutter_todo_list/models/task.dart';
 import 'package:get/get.dart';
