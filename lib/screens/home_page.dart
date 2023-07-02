@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
       iconTheme: IconThemeData(
         color: Get.isDarkMode ? Colors.white : Colors.black,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       elevation: 0,
       title: Text(
         "TODO",

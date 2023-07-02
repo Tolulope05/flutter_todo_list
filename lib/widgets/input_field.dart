@@ -67,7 +67,7 @@ class MyInputField extends StatelessWidget {
                       alignLabelWithHint: true,
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Theme.of(context).backgroundColor,
+                          color: Theme.of(context).colorScheme.background,
                           width: 0,
                         ),
                       ),

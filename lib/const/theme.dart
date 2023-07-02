@@ -23,8 +23,7 @@ class Themes {
       brightness: Brightness.light,
       buttonTheme: Theme.of(context).buttonTheme.copyWith(
             buttonColor: Colors.green,
-          ),
-      backgroundColor: scaffoldBgColor,
+          ), colorScheme: const ColorScheme(background: scaffoldBgColor),
     );
   }
 
@@ -33,8 +32,7 @@ class Themes {
       primaryColor: headerColor,
       brightness: Brightness.dark,
       scaffoldBackgroundColor: darkGreyColor,
-      backgroundColor: darkGreyColor,
-      buttonTheme: Theme.of(context).buttonTheme.copyWith(),
+      buttonTheme: Theme.of(context).buttonTheme.copyWith(), colorScheme: const ColorScheme(background: darkGreyColor),
     );
   }
 }

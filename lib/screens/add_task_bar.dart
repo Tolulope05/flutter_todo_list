@@ -24,7 +24,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   DateTime selectedDate = DateTime.now();
   String _endTime = "9:30 PM";
   String _startTime = DateFormat("hh:mm a").format(DateTime.now());
-  int _selectedRemind = 5;
+  final int _selectedRemind = 5;
   List<int> remindList = [5, 10, 15, 20];
   String _selectedRepeat = "None";
   List<String> repeatList = ["None", "Daily", "Weekly", "Monthly"];
@@ -77,9 +77,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 hint: DateFormat.yMd().format(selectedDate),
                 widget: IconButton(
                   onPressed: () async {
-                    DateTime? _pickedDate = await _getDateFromUser();
-                    if (_pickedDate != null) {
-                      selectedDate = _pickedDate;
+                    DateTime? pickedDate = await _getDateFromUser();
+                    if (pickedDate != null) {
+                      selectedDate = pickedDate;
                     }
                     print(selectedDate);
                   },
@@ -238,34 +238,36 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Future<DateTime?> _getDateFromUser() async {
-    DateTime? _pickedDate = await showDatePicker(
+    DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(DateTime.now().year - 1),
       lastDate: DateTime(2100),
     );
-    if (_pickedDate != null) {
+    if (pickedDate != null) {
       setState(() {
-        selectedDate = _pickedDate;
+        selectedDate = pickedDate;
       });
       return selectedDate;
     }
+    return null;
   }
 
   Future<TimeOfDay?> _getTimeFromUser({required bool isStartTime}) async {
-    TimeOfDay? _pickedTime = await _showTimePicker(isStartTime: isStartTime);
+    TimeOfDay? pickedTime = await _showTimePicker(isStartTime: isStartTime);
 
-    if (_pickedTime != null) {
-      String _formattedTime = _pickedTime.format(context);
+    if (pickedTime != null) {
+      String formattedTime = pickedTime.format(context);
       setState(() {
         if (isStartTime) {
-          _startTime = _formattedTime;
+          _startTime = formattedTime;
         } else {
-          _endTime = _formattedTime;
+          _endTime = formattedTime;
         }
       });
-      return _pickedTime;
+      return pickedTime;
     }
+    return null;
   }
 
   Future<TimeOfDay?> _showTimePicker({required bool isStartTime}) {

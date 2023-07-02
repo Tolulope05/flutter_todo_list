@@ -59,8 +59,8 @@ class _DemoLockScreenState extends State<DemoLockScreen> {
             ),
           ),
           Flexible(
-            child: Container(),
             flex: 1,
+            child: Container(),
           ),
         ],
       ),
